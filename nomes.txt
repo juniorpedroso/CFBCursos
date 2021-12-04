@@ -1,0 +1,22 @@
+Nome....: Junior Pedroso
+Telefone: (14)98801-8018
+E-mail..: sintasebemagora@gmail.com
+Obs.....: teste de digitação
+
+
+Nome....: Daniele Pedroso
+Telefone: (14)98801-8019
+E-mail..: daniqpedroso@gmail.com
+Obs.....: dona do espaço
+
+
+Nome....: Igor
+Telefone: 8888888
+E-mail..: igor@igor
+Obs.....: formatando o notebook
+
+Nome....: Hugo
+Telefone: 9988888
+E-mail..: hugo@hugobosch
+Obs.....: namorando e dormindo
+
