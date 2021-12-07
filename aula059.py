@@ -1,3 +1,5 @@
+# Aula 59 - Recebendo o texto de ENTRY e imprimindo
+
 from tkinter import *
 import os
 
