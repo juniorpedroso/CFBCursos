@@ -1,5 +1,5 @@
 # Aula 80 - TreeView com Banco de Dados
-# Inserindo elementos de um Banco de dados
+# Inserindo deletando e obtendo elementos
 
 from tkinter import *
 from tkinter import ttk
