@@ -21,11 +21,29 @@ def inserir():
 
 
 def deletar():
-    print()
+    try:
+        itemSel = tv_nomes.selection()[0]
+        tv_nomes.delete(itemSel)
+    except:
+        messagebox.showinfo(title='ERRO',
+                            message='Selecione um elemento a ser deletado')
 
 
 def obter():
-    print()
+    try:
+        itemSel = tv_nomes.selection()[0]
+        valores = tv_nomes.item(itemSel, 'values')
+        # Primeiro eu apago os campos dos elementos ENTRY
+        v_id.delete(0, END)
+        v_nome.delete(0, END)
+        v_fone.delete(0, END)
+        # Aqui eu preencho os campos
+        v_id.insert(0, valores[0])
+        v_nome.insert(0, valores[1])
+        v_fone.insert(0, valores[2])
+    except:
+        messagebox.showinfo(title='ERRO',
+                            message='Selecione um elemento')
 
 
 app = Tk()
