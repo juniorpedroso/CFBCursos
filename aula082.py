@@ -1,5 +1,4 @@
-# Aula 80 - TreeView com Banco de Dados
-# Inserindo deletando e obtendo elementos
+# Aula 82 - TreeView com Banco de Dados
 
 from tkinter import *
 from tkinter import ttk
@@ -14,7 +13,7 @@ def popular():
     vquery = 'SELECT * FROM clientes order by n_id'
     linhas = banco.dql(vquery)
     for i in linhas:
-        tv_nomes('', 'end', values=i)
+        tv_nomes.insert('', 'end', values=i)
 
 
 def inserir():
@@ -32,89 +31,99 @@ def inserir():
         messagebox.showinfo(title='ERRO', message='Erro ao inserir')
         return
     popular()
-    v_id.delete(0, END)
     v_nome.delete(0, END)
     v_fone.delete(0, END)
-    v_email.delte(0, END)
-    v_id.focus()
+    v_email.delete(0, END)
+    v_nome.focus()
 
 
 def deletar():
+    vid = -1
+    itemSel = tv_nomes.selection()[0]
+    valores = tv_nomes.item(itemSel, 'Values')
+    vid = valores[0]
     try:
-        itemSel = tv_nomes.selection()[0]
-        tv_nomes.delete(itemSel)
+        vquery = 'DELETE FROM clientes WHERE n_id=' + vid
+        banco.dml(vquery)
     except:
         messagebox.showinfo(title='ERRO',
-                            message='Selecione um elemento a ser deletado')
+                            message='Erro ao deletar')
+        return
+    tv_nomes.delete(itemSel)
 
 
-def obter():
-    try:
-        itemSel = tv_nomes.selection()[0]
-        valores = tv_nomes.item(itemSel, 'values')
-        # Primeiro eu apago os campos dos elementos ENTRY
-        v_id.delete(0, END)
-        v_nome.delete(0, END)
-        v_fone.delete(0, END)
-        # Aqui eu preencho os campos
-        v_id.insert(0, valores[0])
-        v_nome.insert(0, valores[1])
-        v_fone.insert(0, valores[2])
-    except:
-        messagebox.showinfo(title='ERRO',
-                            message='Selecione um elemento')
+def pesquisar():
+    tv_nomes.delete(*tv_nomes.get_children())
+    vquery = 'SELECT * FROM clientes WHERE t_nome LIKE "%'\
+        + v_nomePesquisar.get() + '%" order by n_id'
+    linhas = banco.dql(vquery)
+    for i in linhas:
+        tv_nomes.insert('', 'end', values=i)
+    v_nomePesquisar.delete(0, END)
+    v_nomePesquisar.focus()
 
 
 app = Tk()
 app.title('Pedroso')
-app.geometry('560x350')
+app.geometry('630x450')
 
-l_id = Label(app, text='ID')
-v_id = Entry(app)
+#################################################
 
-l_nome = Label(app, text='Nome')
-v_nome = Entry(app)
+quadroGrid = LabelFrame(app, text='Contatos')
+quadroGrid.pack(fill='both', expand='yes', padx=10, pady=10)
 
-l_fone = Label(app, text='Fone')
-v_fone = Entry(app)
-
-l_email = Label(app, text='E-mail')
-v_email = Entry(app)
-
-
-tv_nomes = ttk.Treeview(app, columns=('id', 'nome', 'fone', 'email'),
+tv_nomes = ttk.Treeview(quadroGrid, columns=('id', 'nome', 'fone', 'email'),
                         show='headings')
 tv_nomes.column('id', minwidth=0, width=50)
 tv_nomes.column('nome', minwidth=0, width=200)
 tv_nomes.column('fone', minwidth=0, width=100)
 tv_nomes.column('email', minwidth=0, width=200)
-
 tv_nomes.heading('id', text='ID')
 tv_nomes.heading('nome', text='NOME')
 tv_nomes.heading('fone', text='TELEFONE')
 tv_nomes.heading('email', text='E-MAIL')
+tv_nomes.pack()
+popular()
 
-bt_inserir = Button(app, text='Inserir', command=inserir)
-bt_deletar = Button(app, text='Deletar', command=deletar)
-bt_obter = Button(app, text='Obter', command=obter)
+#################################################
 
+quadroInserir = LabelFrame(app, text='Inserir Novos Clientes')
+quadroInserir.pack(fill='both', expand='yes', padx=10, pady=10)
 
-l_id.grid(column=0, row=0, sticky='w')
-v_id.grid(column=0, row=1)
+l_nome = Label(quadroInserir, text='Nome')
+l_nome.pack(side='left')
 
-l_nome.grid(column=1, row=0, sticky='w')
-v_nome.grid(column=1, row=1)
+v_nome = Entry(quadroInserir)
+v_nome.pack(side='left', padx=10)
 
-l_fone.grid(column=2, row=0, sticky='w')
-v_fone.grid(column=2, row=1)
+l_fone = Label(quadroInserir, text='Fone')
+l_fone.pack(side='left')
 
-l_email.grid(column=0, row=3, sticky='w')
-v_email.grid(column=0, row=4)
+v_fone = Entry(quadroInserir)
+v_fone.pack(side='left', padx=10)
 
-tv_nomes.grid(column=0, row=5, columnspan=3, padx=1, pady=1)
+l_email = Label(quadroInserir, text='E-mail')
+l_email.pack(side='left')
 
-bt_inserir.grid(column=0, row=6)
-bt_deletar.grid(column=1, row=6)
-bt_obter.grid(column=2, row=6)
+v_email = Entry(quadroInserir)
+v_email.pack(side='left')
+
+bt_inserir = Button(quadroInserir, text='Inserir', command=inserir)
+bt_inserir.pack(side='left', padx=10)
+
+#################################################
+
+quadroPesquisar = LabelFrame(app, text='Pesquisar Clientes')
+quadroPesquisar.pack(fill='both', expand='yes', padx=10, pady=10)
+
+l_nomePesquisar = Label(quadroPesquisar, text='Nome')
+l_nomePesquisar.pack(side='left')
+v_nomePesquisar = Entry(quadroPesquisar)
+v_nomePesquisar.pack(side='left', padx=10)
+bt_pesquisar = Button(quadroPesquisar, text='Pesquisar', command=pesquisar)
+bt_pesquisar.pack(side='left', padx=10)
+bt_todos = Button(quadroPesquisar, text='Mostrar Todos', command=popular)
+bt_todos.pack(side='left', padx=10)
+
 
 app.mainloop()

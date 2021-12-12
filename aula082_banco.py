@@ -27,7 +27,7 @@ def CriaTabela():
     vsql = """CREATE TABLE IF NOT EXISTS clientes (
                     n_id INTEGER PRIMARY KEY ,
                     t_nome varchar(30),
-                    t_telefone varchar(14), 
+                    t_fone varchar(14), 
                     t_email varchar(30),
                     t_obs varchar(512)
                     );"""
@@ -39,7 +39,7 @@ def CriaTabela():
 # arguing that it also manipulates data. There are merits to this argument,
 # not least that there is but a single member in this category:
 # the SELECT statement.
-def dql(query):
+def dql(query):   # SELECT
     vcon = ConexaoBanco()
     cur = vcon.cursor()
     cur.execute(query)
@@ -47,11 +47,10 @@ def dql(query):
     vcon.close()
     return res
 
+
 # The Data Manipulation Language (DML) is the domain of
 # INSERT, UPDATE, and DELETE, which you use to manipulate data.
-
-
-def dml(query):
+def dml(query):   # INSERT, UPDATE, DELETE
     try:
         vcon = ConexaoBanco()
         cur = vcon.cursor()
